@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        li button {
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        li button:hover {
+            background-color: #d32f2f;
+        }
+        .add-task-form {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .add-task-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .add-task-form button {
+            flex: 0 0 80px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .add-task-form button:hover {
+            background-color: #45a049;
+        }
+        p {
+            font-size: 20px; /* Kích thước chữ */
+            font-weight: bold; /* Đậm */
+            color: #FFFFFF; /* Màu chữ (trắng) */
+            text-align: center; /* Căn giữa nội dung */
+            background-color: #FF0000; /* Màu nền (đỏ) */
+            padding: 10px; /* Khoảng cách giữa nội dung và viền của thẻ */
+            border-radius: 5px; /* Bo tròn góc của thẻ */
+            width: 200px; /* Chiều rộng của thẻ */
+            margin: 0 auto; /* Canh giữa thẻ trong khung trình duyệt */
+        }
+        span.title {
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    {% if username %}
+    <p>{{username}}</p>
+    {% endif %}
+    <div class="container">
+        <h1>To-do List</h1>
+        <ul id="taskList">
+            <!-- Các công việc sẽ được hiển thị ở đây -->
+            {% for item in services %}
+            <li>
+                <span class="title">{{item.title}}</span>
+                <span>{{item.time}}</span>
+                <form action="{% url 'delete_item' item.id %}" method="post">
+                    {% csrf_token %} 
+                    <input type="hidden" name="item_id" value={{item.id}}>
+                    <button>Xóa</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{% url 'show' %}" method="POST">
+            {% csrf_token %}
+            <div class="add-task-form">
+                <input name="title" type="text" id="taskInput" placeholder="Nhập công việc mới">
+                <input name="time" type="datetime-local" id="taskInput">
+                <button>Thêm</button>
+            </div>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                    <p1>{{message}}</p1>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login and Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-container label, .form-container input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form-container button {
+            margin-top: 10px;
+        }
+        body {
+
+            color: blueviolet;
+        }
+
+        .bt1 {
+            color: green;
+        }
+            /* Media queries */
+        @media (max-width: 768px) {
+        /* Khi màn hình nhỏ hơn hoặc bằng 768px (thích hợp với điện thoại di động) */
+        .container {
+            flex-direction: column; /* Xếp dọc các thành phần */
+        }
+        .form-container {
+            max-width: 100%; /* Thay đổi chiều rộng tối đa của form để lớn hơn màn hình nhỏ */
+            width: 90%; /* Đặt chiều rộng mặc định cho form */
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container" id="login-form-container">
+            <!-- Đăng nhập -->
+            <h2>Đăng nhập</h2>
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <label for="login-username">Tên đăng nhập:</label>
+                <input type="text" id="login-username" name="username" required>
+                <label for="login-password">Mật khẩu:</label>
+                <input type="password" id="login-password" name="password" required>
+                <button class="bt1" type="submit">Đăng nhập</button>
+                <p id="switch-form">Bạn không có tài khoản? <a href="#" onclick="showRegisterForm()">Register</a></p>
+            </form>
+        </div>
+        <div class="form-container" id="register-form-container" style="display: none;">
+            <!-- Đăng ký -->
+            <h2>Đăng ký</h2>
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <label for="register-username">Tên đăng nhập:</label>
+                <input type="text" id="register-username" name="username" required>
+                <label for="register-password">Mật khẩu:</label>
+                <input type="password" id="register-password" name="password" required>
+                <label for="register-re-password">Xác nhận mật khẩu:</label>
+                <input type="password" id="register-re-password" name="re-password" required>
+                <button type="submit">Đăng ký</button>
+                <p id="switch-form">Bạn đã có tài khoản?<a href="#" onclick="showLoginForm()">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        try {
+            var message = '{{message}}';
+            if (message) {
+                alert(message)   
+            }
+        } catch (error) {
+            
+        }
+        
+        function showLoginForm() {
+            document.getElementById("login-form-container").style.display = "block";
+            document.getElementById("register-form-container").style.display = "none";
+        }
+
+        function showRegisterForm() {
+            document.getElementById("login-form-container").style.display = "none";
+            document.getElementById("register-form-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>
