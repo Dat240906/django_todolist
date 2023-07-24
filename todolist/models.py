@@ -1,6 +1,5 @@
 from django.db import models
 from django.forms import CharField
-from keyboard import on_press
 
 # Create your models here.
 
