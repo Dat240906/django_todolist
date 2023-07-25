@@ -97,18 +97,16 @@ class DeleteItem(View):
 
 
 def context_response_error(message):
-    context = {
+    return {
         'status':False,
         'message':message
     }
-    return context
 
 def context_response_success(message):
-    context = {
+    return {
         'status':True,
         'data':message
     }
-    return context
 
 class UserAPI(APIView):
     def post(self, request):
@@ -139,13 +137,13 @@ class UserAPI(APIView):
             data = UserSerializerModel(data=data_global)
 
             if not data.is_valid():
-                return HttpResponse(context_response_error('Account do exist'), status=status.HTTP_400_BAD_REQUEST)
+                return Response(context_response_error('Account do exist'), status=status.HTTP_400_BAD_REQUEST)
             
             username = data.data['username']
             password = data.data['password']
 
             User.objects.create(username= username, password=password)
-            return HttpResponse(context_response_success('Create Account Success!'), status=status.HTTP_200_OK)
+            return Response(context_response_success('Create Account Success!'), status=status.HTTP_200_OK)
     
 
 class ServiceAPI(APIView):
@@ -169,7 +167,7 @@ class ServiceAPI(APIView):
             check_service = ServiceSerializerModel(data=data_service)
 
             if not (check_user.is_valid() and check_service.is_valid()):
-                return HttpResponse(context_response_error('type error'), status=status.HTTP_400_BAD_REQUEST)
+                return Response(context_response_error('type error'), status=status.HTTP_400_BAD_REQUEST)
             
             username = data_user['username']
             password = data_user['password']
@@ -182,7 +180,7 @@ class ServiceAPI(APIView):
                 user = User.objects.get(username=username)
                 if user.password == password:
                     Service.objects.create(username= user,  title=title, time=time)
-                    return HttpResponse(context_response_success(f'Create Service for [{username}] Success!'), status=status.HTTP_200_OK)
+                    return Response(context_response_success(f'Create Service for [{username}] Success!'), status=status.HTTP_200_OK)
                 else:
                     return Response(context_response_error('Incorrect iformation Account!'), status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
@@ -206,7 +204,7 @@ class ServiceAPI(APIView):
             check_service = ServiceSerializerModel(data=data_service)
 
             if not (check_user.is_valid() and check_service.is_valid()):
-                return HttpResponse(context_response_error('type error'), status=status.HTTP_400_BAD_REQUEST)
+                return Response(context_response_error('type error'), status=status.HTTP_400_BAD_REQUEST)
             
             username = data_user['username']
             password = data_user['password']
@@ -220,8 +218,9 @@ class ServiceAPI(APIView):
                         service = Service.objects.get(title=title)
                         
                         service.delete()
+                    
                     except Service.DoesNotExist:return Response(context_response_error(f'Not Found Service [{title}] in [{username}]'), status=status.HTTP_400_BAD_REQUEST)
-                    return HttpResponse(context_response_success(f'Deleta Service with title=[{title}] of [{username}] Success!'), status=status.HTTP_200_OK)
+                    return Response(context_response_success(f'Deleta Service with title=[{title}] of [{username}] Success!'), status=status.HTTP_200_OK)
                 else:
                     return Response(context_response_error('Incorrect iformation Account!'), status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
