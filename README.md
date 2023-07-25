@@ -15,8 +15,7 @@
 </span>
 
 
-# TO-DO LIST prọect
-
+# TO-DO LIST Project
 Mô tả ngắn về dự án của bạn ở đây.
 
 ## Cách sử dụng API
