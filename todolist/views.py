@@ -14,7 +14,7 @@ from .serializers import UserSerializer, ServiceSerializerModel, UserSerializerM
 
 class Index(View):
     def get(self, request):
-        return redirect('home')
+        return render(request, 'home.html')
 
 
 class Login(View):
